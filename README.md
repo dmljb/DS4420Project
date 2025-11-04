@@ -1,7 +1,6 @@
 # DS4420Project
 **Course:** DATA SCIENCE 4420: Machine Learning & Data Mining 2  
 **Professor:** Eric Gerber  
-**Due Dates:** Phase I – Nov 7 | Final – Dec 4  
 
 ---
 
