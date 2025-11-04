@@ -6,7 +6,7 @@
 ---
 
 ## Project Title
-Yield Prediction .... Using Machine Learning
+Yield Prediction for the US using Macroeconomic Indicators and LLM Analysis
 
 ---
 
@@ -17,21 +17,12 @@ Yield Prediction .... Using Machine Learning
 --- 
 
 ## Overview
-This project aims....
+This project aims to predict the the future shape of the US yield curve using both pre-existing macroeconomic data as well as LLM analysis.
+Since traditional frameworks such as Nelson-Siegel and VAR are granted great benefits through modern machine learning techniques we aim to capture those nonlinear relationships.
 
 ---
 
 ## Data
-**Sources:**
-here...
-
-**Dataset summary**
-here...
-
-**Forecasting goal**
-here...
-
----
-
-## Method Summary
-here...
+- **FRED-MD**: U.S. macroeconomic & financial indicators (McCracken & Ng 2016)  
+- **Federal Reserve transcripts / speeches**: textual data for LLM sentiment analysis  
+- **Market sources**: Treasury yields and benchmark rates from FRED and U.S. Treasury  
