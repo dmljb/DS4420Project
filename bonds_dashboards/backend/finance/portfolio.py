@@ -1,5 +1,5 @@
-from bonds import Bonds, b1, bond_issuing_date, b2
-from yield_curve import YieldCurve
+from .bonds import Bonds, b1, bond_issuing_date, b2
+from .yield_curve import YieldCurve
 
 class Portfolio:
     def __init__(self):
@@ -43,7 +43,7 @@ class Portfolio:
     def portfolio_dv01(self, yield_curve=None):
         pv = 0
         for i in range(0, len(self.bonds)):
-            pv += self.bonds[i].dv01(curve) * self.usd_amount[i] / self.bonds[i].face_value
+            pv += self.bonds[i].dv01(yield_curve) * self.usd_amount[i] / self.bonds[i].face_value
         return pv
     
     def portfolio_duration(self, interest_rates):
@@ -52,24 +52,24 @@ class Portfolio:
            port_dur += self.bonds[i].macaulay_duration(interest_rates) * self.weights[i]
         return port_dur
     
-    def scenario_analysis(self, rate_scenarios):
-        """Analyze portfolio performance across different rate scenarios"""
-        results = {}
-        base_pv = self.portfolio_present_value(interest_rate)  # Assuming this is base case
+    # def scenario_analysis(self, rate_scenarios):
+    #     """Analyze portfolio performance across different rate scenarios"""
+    #     results = {}
+    #     base_pv = self.portfolio_present_value(interest_rate)  # Assuming this is base case
         
-        for scenario_name, rates in rate_scenarios.items():
-            scenario_pv = self.portfolio_present_value(rates)
-            pnl = scenario_pv - base_pv
-            pnl_pct = (pnl / base_pv) * 100 if base_pv != 0 else 0
+    #     for scenario_name, rates in rate_scenarios.items():
+    #         scenario_pv = self.portfolio_present_value(rates)
+    #         pnl = scenario_pv - base_pv
+    #         pnl_pct = (pnl / base_pv) * 100 if base_pv != 0 else 0
             
-            results[scenario_name] = {
-                'present_value': scenario_pv,
-                'pnl_dollar': pnl,
-                'pnl_percent': pnl_pct,
-                'dv01': self.portfolio_dv01(rates),
-                'duration': self.portfolio_duration(rates)
-            }
-        return results
+    #         results[scenario_name] = {
+    #             'present_value': scenario_pv,
+    #             'pnl_dollar': pnl,
+    #             'pnl_percent': pnl_pct,
+    #             'dv01': self.portfolio_dv01(rates),
+    #             'duration': self.portfolio_duration(rates)
+    #         }
+    #     return results
 
     def get_portfolio_summary(self, interest_rates):
         """Get complete portfolio summary for API"""
@@ -91,9 +91,11 @@ curve.fetch_treasury_rates()
 p1 = Portfolio()
 p1.add_bond(b1, 400000)
 p1.add_bond(b2, 500000)
-print(p1.weights)
-print(p1.bonds[1].present_value())
-print(p1.portfolio_present_value())
+
+if __name__ == '__main__':
+    print(p1.weights)
+    print(p1.bonds[1].present_value())
+    print(p1.portfolio_present_value())
 
 # Test scenario analysis
 # rate_scenarios = {

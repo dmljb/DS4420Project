@@ -1,6 +1,6 @@
 import datetime
 from dateutil.relativedelta import relativedelta
-from yield_curve import YieldCurve, curve
+from .yield_curve import YieldCurve, curve
 
 
 """
@@ -105,23 +105,41 @@ class Bonds:
         bumped_pv = sum(bumped_present_values)
         return bumped_pv - original_pv
     
-    def macaulay_duration(self, interest_rates, day_count=360):
+    def macaulay_duration(self, yield_curve=None):
+        """
+        Calculate Macaulay duration using either yield curve or fallback rate.
+        Macaulay duration is the weighted average time to receive cash flows.
+        """
         cash_flows = self.cash_flows()
-        durations = []
+        weighted_times = []
         present_values = []
-        for i in cash_flows:
-            days = (i['date'] - datetime.date.today()).days
-            years_to_payment = days / 365.25
+        
+        for cf in cash_flows:
+            days = (cf['date'] - datetime.date.today()).days
             if days >= 0:
-                pv = i['value'] / (1 + interest_rates / 100  * days / day_count)
+                years = days / 365.25
+                
+                # Get discount rate for this cash flow
+                if yield_curve is not None:
+                    discount_rate = yield_curve.interpolate_rate(years) / 100
+                    pv = cf['value'] / ((1 + discount_rate) ** years)
+                else:
+                    # Fallback to simple discounting
+                    rate = curve.rates[0] / 100  # Use first rate as fallback
+                    pv = cf['value'] / ((1 + rate) ** years)
+                
                 present_values.append(pv)
+                weighted_times.append(pv * years)
             else:
                 present_values.append(0)
-        for i in range(len(present_values)):
-            days = (cash_flows[i]['date'] - datetime.date.today()).days / 365.25
-            duration = present_values[i] / sum(present_values) * days
-            durations.append(duration)
-        return sum(durations)
+                weighted_times.append(0)
+        
+        total_pv = sum(present_values)
+        if total_pv == 0:
+            return 0
+        
+        # Macaulay Duration = Sum of (PV_i * Time_i) / Total_PV
+        return sum(weighted_times) / total_pv
 
     def modified_duration(self, interest_rates, day_count=360):
         """Modified Duration = Macaulay Duration / (1 + yield/frequency)"""
@@ -143,8 +161,11 @@ b1 = Bonds(bond_issuing_date, 1000, 0.04, 10)
 
 b2 = Bonds(datetime.date.today() - relativedelta(months=1), 1000, 0.05, 1)
 b3 = Bonds(datetime.date.today(), 1000, 0.1, 3)
+# interest_rate = 0.045
 
-print(b1.present_value(curve))
+
+if __name__ == '__main__':
+    print(b1.present_value(curve))
 
 # print(b1.dv01(curve))
 # print(b1.fallback_dv01(curve.rates[curve.maturities.index(b1.maturity)]))

@@ -6,7 +6,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
 from fredapi import Fred
-from interest_models import InterestRatesModel
+from .interest_models import InterestRatesModel
 
 
 load_dotenv(override=True)
@@ -71,55 +71,34 @@ class YieldCurve:
                 
         return discount_rates
     
-    def vasicek_prediction(self):
-        scenarios = {}
+    # def vasicek_prediction(self):
+    #     scenarios = {}
 
-        for i, maturity in enumerate(self.maturities):
+    #     for i, maturity in enumerate(self.maturities):
 
-            model = InterestRatesModel(initial_rate=self.rates[i]/100)
+    #         model = InterestRatesModel(initial_rate=self.rates[i]/100)
 
-            # Different parameters for different maturities
-            if maturity <= 2:
-                a, b, sigma = 0.5, 0.03, 0.008  # Short rates more volatile
-            else:
-                a, b, sigma = 0.2, 0.04, 0.012  # Long rates more stable
+    #         # Different parameters for different maturities
+    #         if maturity <= 2:
+    #             a, b, sigma = 0.5, 0.03, 0.008  # Short rates more volatile
+    #         else:
+    #             a, b, sigma = 0.2, 0.04, 0.012  # Long rates more stable
                 
-            # Generate rate paths for this maturity
-            rate_paths = model.vasicek_simulation(
-                a=a, b=b, sigma=sigma, 
-                # n_simulations=n_simulations,
-                # n_periods=time_horizon_months,
-                dt=1/12  # Monthly steps
-            )
+    #         # Generate rate paths for this maturity
+    #         rate_paths = model.vasicek_simulation(
+    #             a=a, b=b, sigma=sigma, 
+    #             # n_simulations=n_simulations,
+    #             # n_periods=time_horizon_months,
+    #             dt=1/12  # Monthly steps
+    #         )
             
-            scenarios[f'{maturity}Y'] = rate_paths
+    #         scenarios[f'{maturity}Y'] = rate_paths
             
-        return scenarios
+    #     return scenarios
 
 curve = YieldCurve()
 curve.fetch_treasury_rates()
 
-import matplotlib.pyplot as plt
-
-# print(curve.vasicek_prediction())
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-fig, ax = plt.subplots()
-
-bond_duration = '1Y'
-y = curve.vasicek_prediction()[bond_duration]
-x = range(len(y))
-
-# Plot the curve
-ax.plot(x, y, label= f"{bond_duration} Vasicek Prediction")
-
-# Compute and plot the average line
-avg = np.mean(y)   # since y is a list
-ax.axhline(avg, color="red", linestyle="--", label=f"Average = {avg:.2f}")
-
-# Add legend
-# ax.legend()
-
-plt.show()      
+if __name__ == '__main__':
+    print(curve.rates)
+    print(curve.interpolate_rate(6.7))
