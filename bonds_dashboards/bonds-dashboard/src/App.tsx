@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+// import YieldCurveChart from './YieldCurveGraph.tsx';
 
 // Define TypeScript interfaces
 interface BondData {
@@ -16,16 +17,23 @@ interface PortfolioData {
   number_of_bonds: number;
 }
 
+interface YieldCurveData {
+  maturities: number[];
+  rates: number[];
+  curve_type: string;
+}
+
 function App() {
   const [bondData, setBondData] = useState<BondData | null>(null);
   const [portData, setPortData] = useState<PortfolioData | null>(null);
+  const [yieldCurve, setYieldCurve] = useState<YieldCurveData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   // const [currentScenario, setCurrentScenario] = useState('base');
 
   useEffect(() => {
     // Fetch both data sources
-    Promise.all([fetchBondData(), fetchPortData()])
+    Promise.all([fetchBondData(), fetchPortData()]) //, fetchYieldData()])
       .then(() => {
         setLoading(false);
       })
@@ -66,34 +74,52 @@ function App() {
     }
   };
 
-  const ScenarioControls = ({onScenarioChange, currentScenario}) => {
-    const scenarios = [
-      {id: 'base', label: 'Base Case'},
-      {id: 'Fed raises 100bp', label: '100bps'},
-      { id: 'recession', label: 'Recession' }
-    ];
+  const fetchYieldData = async() => {
+    try {
+      const response = await fetch('http://localhost:5050/api/yield_curve');
+      
+      if (!response.ok) {
+        throw new Error(`Yield Curve API error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setYieldCurve(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error');
+      console.error('Error fetching portfolio data:', err);
+    }
+  }; 
+  
+//   const ScenarioControls = ({onScenarioChange, currentScenario}) => {
+//     const scenarios = [
+//       {id: 'base', label: 'Base Case'},
+//       {id: 'Fed raises 100bp', label: '100bps'},
+//       { id: 'recession', label: 'Recession' }
+//     ];
 
-  return (
-    <div className="control-panel">
-      <h3>Rate Scenarios</h3>
-      {scenarios.map(scenario => (
-        <button 
-          key={scenario.id}
-          onClick={() => onScenarioChange(scenario.id)}
-          className={`scenario-btn ${currentScenario === scenario.id ? 'active' : ''}`}
-        >
-          {scenario.label}
-        </button>
-      ))}
-    </div>
-  );
-};
+//   return (
+//     <div className="control-panel">
+//       <h3>Rate Scenarios</h3>
+//       {scenarios.map(scenario => (
+//         <button 
+//           key={scenario.id}
+//           onClick={() => onScenarioChange(scenario.id)}
+//           className={`scenario-btn ${currentScenario === scenario.id ? 'active' : ''}`}
+//         >
+//           {scenario.label}
+//         </button>
+//       ))}
+//     </div>
+//   );
+// };
 
 
-const handleScenarioChange = (scenario) => {
-  setCurrentScenario(scenario);
-  // Later you'll fetch new data based on this scenario
-};
+// const handleScenarioChange = (scenario) => {
+//   setCurrentScenario(scenario);
+//   // Later you'll fetch new data based on this scenario
+// };
+
+
 
 
   const handleRetry = () => {
@@ -131,6 +157,7 @@ const handleScenarioChange = (scenario) => {
       </div>
     );
   }
+
 
   return (
     <div className="dashboard">
@@ -215,6 +242,14 @@ const handleScenarioChange = (scenario) => {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Yield Curve Graph - Only show if yieldCurve exists */}
+      {yieldCurve && (
+        <div className="yield-curve-section">
+          <h2>Yield Curve</h2>
+          <YieldCurveChart data={yieldCurve} />
         </div>
       )}
 
