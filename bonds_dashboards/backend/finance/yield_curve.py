@@ -21,15 +21,15 @@ class YieldCurve:
     def fetch_treasury_rates(self):
         """Fetch current Treasury zero rates from FRED"""
         series_ids = {
-            # 1: "DGS1",     # 1-Year Treasury
-            # 2: "DGS2",     # 2-Year Treasury  
-            # 5: "DGS5",     # 5-Year Treasury
-            # 10: "DGS10",   # 10-Year Treasury
+            1: "DGS1",     # 1-Year Treasury
+            2: "DGS2",     # 2-Year Treasury  
+            5: "DGS5",     # 5-Year Treasury
+            10: "DGS10",   # 10-Year Treasury
             # 30: "DGS30"    # 30-Year Treasury
-            1: "THREEFY1",
-            2: "THREEFY2",
-            5: "THREEFY5",
-            10: "THREEFY10",
+            # 1: "THREEFY1",
+            # 2: "THREEFY2",
+            # 5: "THREEFY5",
+            # 10: "THREEFY10",
         }
         try:
             df = pd.DataFrame({m: fred.get_series(sid) for m, sid in series_ids.items()})
