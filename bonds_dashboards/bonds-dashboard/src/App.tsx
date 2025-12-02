@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import YieldCurveHistory from "./YieldCurveHistory";
+
 // import YieldCurveChart from './YieldCurveGraph.tsx';
 
 // Define TypeScript interfaces
@@ -29,6 +31,7 @@ function App() {
   const [yieldCurve, setYieldCurve] = useState<YieldCurveData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<"dashboard" | "yield_history">("dashboard");
   // const [currentScenario, setCurrentScenario] = useState('base');
 
   useEffect(() => {
@@ -158,9 +161,25 @@ function App() {
     );
   }
 
-
+if (page === "yield_history") {
   return (
     <div className="dashboard">
+      <YieldCurveHistory />
+      <div className="controls">
+        <button onClick={() => setPage("dashboard")} className="refresh-btn">
+          Back to Dashboard
+        </button>
+      </div>
+    </div>
+  );
+}
+  
+  return (
+    <div className="dashboard">
+      <div className="navbar">
+  <button onClick={() => setPage("dashboard")}>Dashboard</button>
+  <button onClick={() => setPage("yield_history")}>Yield Curve History</button>
+</div>
       <h1>Portfolio Dashboard</h1>
       
       {/* Portfolio Cards - Only show if portData exists */}
