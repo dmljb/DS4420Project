@@ -22,8 +22,12 @@ series_ids = {
     "personal_income": "PI",         # personal income
     "retail_sales": "RSAFS",         # retail and food services
     "housing_starts": "HOUST",       # housing starts
-    "treasury_10y": "DGS10",         # 10y Treasury
-    "treasury_2y": "DGS2",           # 2y Treasury
+
+    # yields
+    "treasury_1y": "DGS1",           # 1 year Treasury
+    "treasury_2y": "DGS2",           # 2 year Treasury
+    "treasury_5y": "DGS5",           # 5 year Treasury
+    "treasury_10y": "DGS10",         # 10 year Treasury
 }
 
 def fetch_series(sid):

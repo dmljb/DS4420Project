@@ -88,7 +88,7 @@ def basic_checks(df):
     print(corr.head())
 
     # check for specific columns
-    for col in ["treasury_10y", "treasury_2y", "cpi", "unemployment"]:
+    for col in ["treasury_1y", "treasury_2y", "treasury_5y", "treasury_10y", "cpi", "unemployment"]:
         if col in df.columns:
             print(f"\n{col} sample:")
             print(df[col].tail())
