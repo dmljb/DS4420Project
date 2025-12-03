@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
+import type { Bin } from "d3-array";
 
 interface CurveRow {
   date: string;
@@ -55,7 +56,6 @@ export default function YieldCurveHistory() {
   );
 }
 
-
 function YieldHistogram({ moves }: { moves: number[] }) {
   const ref = React.useRef<SVGSVGElement>(null);
 
@@ -69,11 +69,12 @@ function YieldHistogram({ moves }: { moves: number[] }) {
     svg.selectAll("*").remove();
 
     const raw = d3.extent(moves) as [number, number];
-    const padded = [raw[0] - 0.2, raw[1] + 0.2];
+    const padded: [number, number] = [raw[0] - 0.2, raw[1] + 0.2];
 
     const x = d3.scaleLinear().domain(padded).range([50, width - 20]);
 
-    const bins = d3.bin().domain(padded).thresholds(15)(moves);
+    const binGenerator = d3.bin<number, number>().domain(padded).thresholds(15);
+    const bins: Bin<number, number>[] = binGenerator(moves);
 
     const y = d3
       .scaleLinear()
@@ -82,24 +83,24 @@ function YieldHistogram({ moves }: { moves: number[] }) {
 
     svg
       .append("g")
-      .selectAll("rect")
+      .selectAll<SVGRectElement, Bin<number, number>>("rect")
       .data(bins)
       .enter()
       .append("rect")
-      .attr("x", (d) => x(d.x0 || 0))
+      .attr("x", (d) => x(d.x0 ?? 0))
       .attr("y", (d) => y(d.length))
-      .attr("width", (d) => Math.max(0, x(d.x1 || 0) - x(d.x0 || 0) - 1))
+      .attr("width", (d) =>
+        Math.max(0, x(d.x1 ?? 0) - x(d.x0 ?? 0) - 1)
+      )
       .attr("height", (d) => (height - 40) - y(d.length))
       .attr("fill", "#a3c8ff");
 
-    // X axis
     svg
       .append("g")
       .attr("class", "axis")
       .attr("transform", `translate(0,${height - 40})`)
       .call(d3.axisBottom(x));
 
-    // X label
     svg
       .append("text")
       .attr("x", width / 2)
@@ -108,14 +109,12 @@ function YieldHistogram({ moves }: { moves: number[] }) {
       .attr("fill", "white")
       .text("Monthly Change in 10-Year Yield (%)");
 
-    // Y axis
     svg
       .append("g")
       .attr("class", "axis")
       .attr("transform", `translate(50,0)`)
       .call(d3.axisLeft(y));
 
-    // Y label
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
@@ -128,7 +127,6 @@ function YieldHistogram({ moves }: { moves: number[] }) {
 
   return <svg ref={ref} width={600} height={260} style={{ overflow: "visible" }}></svg>;
 }
-
 
 function YieldCurvePlot({ row }: { row: CurveRow }) {
   const ref = React.useRef<SVGSVGElement>(null);
@@ -159,9 +157,13 @@ function YieldCurvePlot({ row }: { row: CurveRow }) {
     svg
       .append("path")
       .datum(rates)
-      .attr("d", d3.line<number>()
-        .x((_, i) => x(maturities[i])!)
-        .y((v) => y(v)) as any)
+      .attr(
+        "d",
+        d3
+          .line<number>()
+          .x((_, i) => x(maturities[i])!)
+          .y((v: number) => y(v)) as any
+      )
       .attr("fill", "none")
       .attr("stroke", "#00ff99")
       .attr("stroke-width", 3);
@@ -172,20 +174,18 @@ function YieldCurvePlot({ row }: { row: CurveRow }) {
       .enter()
       .append("circle")
       .attr("cx", (_, i) => x(maturities[i])!)
-      .attr("cy", (d) => y(d))
+      .attr("cy", (d: number) => y(d))
       .attr("r", 7)
       .attr("fill", "white")
       .attr("stroke", "#00cc66")
       .attr("stroke-width", 3);
 
-    // X axis
     svg
       .append("g")
       .attr("class", "axis")
       .attr("transform", `translate(0,${height - 40})`)
       .call(d3.axisBottom(x));
 
-    // X label
     svg
       .append("text")
       .attr("x", width / 2)
@@ -194,14 +194,12 @@ function YieldCurvePlot({ row }: { row: CurveRow }) {
       .attr("fill", "white")
       .text("Maturity (Years)");
 
-    // Y axis
     svg
       .append("g")
       .attr("class", "axis")
       .attr("transform", `translate(60,0)`)
       .call(d3.axisLeft(y));
 
-    // Y label
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
