@@ -1,5 +1,13 @@
 {
   "homepage": "https://dmljb.github.io/DS4420Project/",
+"scripts": {
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist",
+  "build": "vite build"
+},
+  "name": "bonds-dashboard",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -7,11 +15,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-  "name": "bonds-dashboard",
-  "version": "1.0.0",
-  "private": true,
   "dependencies": {
-    "d3": "^7.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -25,3 +29,4 @@
     "vite": "^5.0.0"
   }
 }
+
