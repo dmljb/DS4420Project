@@ -392,12 +392,6 @@ body {
   font-weight: 600;
 }
 
-.analysis-block {
-  margin-bottom: 16px;
-  padding-left: 8px;
-  border-left: 2px solid #3a82f7;
-}
-
 .metric {
   display: flex;
   justify-content: space-between;
@@ -405,3 +399,104 @@ body {
   font-size: 0.95rem;
 }
 
+/* ============================== */
+/*       INDIVIDUAL  BONDS        */
+/* ============================== */
+
+.bond-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.bond-section h2 {
+  margin-bottom: 20px;
+}
+
+.bond-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.bond-cards .card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  min-width: 180px;
+  text-align: center;
+}
+
+/* ========================================= */
+/*   MINUTE-LEVEL MARKET ANALYSIS SPACING    */
+/* ========================================= */
+
+.analysis-block .metric {
+  max-width: 350px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+
+.bond-cards .card h3,
+.bond-cards .card .value {
+  color: #1a1a1a !important;
+}
+
+.analysis-section {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "policy macro"
+    "rate   rate";
+  row-gap: 5px;
+  column-gap: 40px;
+  justify-items: center;
+  align-items: start;
+}
+
+.analysis-block.policy { grid-area: policy; }
+.analysis-block.macro  { grid-area: macro; }
+.analysis-block.rate   { grid-area: rate; }
+
+.analysis-block {
+  width: 260px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.analysis-block h4 + .metric,
+.analysis-block h4 + .metric ~ .metric {
+  border-left: 2px solid #3a82f7;
+  border-right: 2px solid #3a82f7;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+
+.analysis-block.rate {
+  margin: 0 auto;
+}
+
+.analysis-block .metric {
+  max-width: 220px;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+
+.analysis-block.rate {
+  margin-top: -10px;
+}

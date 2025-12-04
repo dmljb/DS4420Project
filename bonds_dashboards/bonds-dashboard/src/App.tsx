@@ -417,7 +417,7 @@ function App() {
 
         {minuteText && (
   <div className="analysis-section">
-    <div className="analysis-block">
+    <div className="analysis-block policy">
       <h4>Policy Stance</h4>
       <Metric label="Policy Bias" value={minuteText.policy_bias} />
       <Metric label="Expected Move (bps)" value={minuteText.expected_move_bps} />
@@ -425,7 +425,7 @@ function App() {
       <Metric label="Balance Sheet Signal" value={minuteText.balance_sheet_signal} />
     </div>
 
-    <div className="analysis-block">
+    <div className="analysis-block macro">
       <h4>Macro Tones</h4>
       <Metric label="Inflation Tone" value={minuteText.inflation_tone} />
       <Metric label="Labor Tone" value={minuteText.labor_tone} />
@@ -433,7 +433,7 @@ function App() {
       <Metric label="Financial Conditions Tone" value={minuteText.financial_conditions_tone} />
     </div>
 
-    <div className="analysis-block">
+    <div className="analysis-block rate">
       <h4>Rate Probabilities</h4>
       <Metric label="P(Cut)" value={minuteText.p_cut} />
       <Metric label="P(Hold)" value={minuteText.p_hold} />
