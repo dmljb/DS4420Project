@@ -1,6 +1,12 @@
 flask
-flask-cors
+pandas
+numpy
+matplotlib
 fredapi
 python-dotenv
-requests
-gunicorn
+tavily-python
+transformers
+tensorflow
+torch
+langchain
+langchain-google-genai
