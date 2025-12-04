@@ -9,3 +9,7 @@ python-dotenv
 tavily-python
 google-generativeai
 requests
+dotenv
+datetime
+scipy
+langchain-google-genai
