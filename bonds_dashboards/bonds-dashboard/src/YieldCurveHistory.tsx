@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import type { Bin } from "d3-array";
 
+const BASE = import.meta.env.BASE_URL;
+
 interface CurveRow {
   date: string;
   treasury_1y: number;
@@ -15,7 +17,7 @@ export default function YieldCurveHistory() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    d3.csv("/yield_history.csv").then((rows: any[]) => {
+    d3.csv(`${BASE}yield_history.csv`).then((rows: any[]) => {
       const parsed = rows.map((r) => ({
         date: r.date,
         treasury_1y: +r.treasury_1y,
