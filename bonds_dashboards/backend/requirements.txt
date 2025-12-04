@@ -1,13 +1,12 @@
 gunicorn
 flask
+flask-cors
 pandas
 numpy
 matplotlib
 fredapi
 python-dotenv
 tavily-python
-transformers
-tensorflow
-torch
-langchain
-langchain-google-genai
+google-generativeai
+requests
+this-is-a-test-package-123
