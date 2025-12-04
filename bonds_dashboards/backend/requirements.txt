@@ -3,7 +3,6 @@ numpy
 matplotlib
 dotenv
 fredapi
-os
 datetime
 scipy
 langchain-google-genai
