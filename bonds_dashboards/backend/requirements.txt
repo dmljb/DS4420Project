@@ -9,4 +9,3 @@ python-dotenv
 tavily-python
 google-generativeai
 requests
-this-is-a-test-package-123
