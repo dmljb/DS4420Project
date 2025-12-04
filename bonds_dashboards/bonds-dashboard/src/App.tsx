@@ -103,7 +103,7 @@ function App() {
     setMinuteError(null);
 
     try {
-      const response = await fetch("http://ds4420-backend.onrender.com/api/minute_analysis");
+      const response = await fetch("https://ds4420-backend.onrender.com/api/minute_analysis");
       if (!response.ok) {
         throw new Error(`Minute analysis API error! status: ${response.status}`);
       }
@@ -139,7 +139,7 @@ function App() {
   // ----------------------------------
   const fetchBondData = async () => {
     try {
-      const response = await fetch("http://ds4420-backend.onrender.com:5050/api/bond");
+      const response = await fetch("https://ds4420-backend.onrender.com:5050/api/bond");
       if (!response.ok) throw new Error(`Bond API error! status: ${response.status}`);
       const data = await response.json();
       setBondData(data);
@@ -151,7 +151,7 @@ function App() {
 
   const fetchPortData = async () => {
     try {
-      const response = await fetch("http://ds4420-backend.onrender.com/api/portfolio");
+      const response = await fetch("https://ds4420-backend.onrender.com/api/portfolio");
       if (!response.ok) throw new Error(`Portfolio API error! status: ${response.status}`);
       const data = await response.json();
       setPortData(data);
@@ -163,7 +163,7 @@ function App() {
 
   const fetchYieldData = async () => {
     try {
-      const response = await fetch("http://ds4420-backend.onrender.com/api/yield_curve");
+      const response = await fetch("https://ds4420-backend.onrender.com/api/yield_curve");
       if (!response.ok) throw new Error(`Yield Curve API error! status: ${response.status}`);
       const data = await response.json();
       setYieldCurve(data);
@@ -174,7 +174,7 @@ function App() {
 
   const fetchPredictionData = async () => {
     try {
-      const response = await fetch("http://ds4420-backend.onrender.com/api/yield_predictions");
+      const response = await fetch("https://ds4420-backend.onrender.com/api/yield_predictions");
       if (!response.ok) throw new Error(`Prediction API error! status: ${response.status}`);
       const data = await response.json();
       setPrediction(data);
@@ -208,7 +208,7 @@ function App() {
     setRecoLoading(true);
     setRecoError(null);
     try {
-      const response = await fetch("http://ds4420-backend.onrender.com/api/recommendation");
+      const response = await fetch("https://ds4420-backend.onrender.com/api/recommendation");
       if (!response.ok) throw new Error(`Recommendation error: ${response.status}`);
       const data = await response.json();
       setRecoText(data.recommendation);
