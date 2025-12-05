@@ -290,6 +290,7 @@ function App() {
       <div className="navbar">
         <button onClick={() => setPage("dashboard")}>Dashboard</button>
         <button onClick={() => setPage("yield_history")}>Yield Curve History</button>
+        <button onClick={() => setPage("model_results")}>Model Results</button>
       </div>
 
       <h1>Portfolio Dashboard</h1>
