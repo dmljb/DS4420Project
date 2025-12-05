@@ -149,7 +149,7 @@ plot_test_results(test_gs2)
 comparison <- data.frame(
   Model = c("GS1", "GS2", "GS5", "GS10"),
   RMSE = c(test_gs1$rmse, test_gs2$rmse, test_gs5$rmse, test_gs10$rmse),
-  MAE = c(test_gs1$mae, test_gs2$mae, test_gs5$mae, test_gs10$mae),
+  MAE = c(test_gs1$mae, test_gs2$mae, test_gs5$mae, test_gs10$mae)
 )
 
 print(comparison)
@@ -177,6 +177,31 @@ future_gs10 <- predict_next(result_gs10)
 yield_curve <- c(future_gs1, future_gs2, future_gs5, future_gs10)
 yield_curve
 # 4.089233 3.766546 3.407099 3.824731
+
+conclusions <- function(result, model_name) {
+  png(filename = paste0("r_method/diagnostics_", model_name, ".png"), 
+      width = 1200, height = 1000)
+  plot(result$model)
+  dev.off()
+  
+  png(filename = paste0("r_method/residuals_", model_name, ".png"), 
+      width = 800, height = 600)
+  residuals <- residuals(result$model)[,1]  
+  fitted_vals <- fitted(result$model)[,1]  
+  plot(fitted_vals, residuals, 
+       main = paste(model_name, ": Residuals vs Fitted"),
+       xlab = "Fitted Values", ylab = "Residuals")
+  abline(h = 0, col = "red", lty = 2)
+  dev.off()
+  
+  return(summary(result$model))
+}
+
+for (result in list(result_gs1, result_gs2, result_gs5, result_gs10)) {
+  conclusions(result, result$target_var)
+  print(summary(result$model))
+}
+
 
 bayes_preds <- data.frame(
   GS1 = test_gs1$predicted,
