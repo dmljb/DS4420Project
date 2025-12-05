@@ -53,21 +53,14 @@ export default function InteractiveEnsemblePlot() {
   const series = data[selected];
 
   return (
-    <div>
-      <h2>Interactive Ensemble Yield Forecast</h2>
+    <div style={{ textAlign: "center", width: "100%" }}>
+      
+      {/* Centered Title */}
+      <h2 style={{ marginBottom: "20px" }}>
+        Interactive Ensemble Yield Forecast
+      </h2>
 
-      <label>
-        Select maturity:{" "}
-        <select
-          value={selected}
-          onChange={(e) => setSelected(e.target.value)}
-        >
-          {maturities.map((m) => (
-            <option key={m} value={m}>{m}</option>
-          ))}
-        </select>
-      </label>
-
+      {/* Graph */}
       <Plot
         data={[
           {
@@ -76,7 +69,7 @@ export default function InteractiveEnsemblePlot() {
             type: "scatter",
             mode: "lines+markers",
             name: "Actual",
-            line: { color: "black", width: 2 }
+            line: { color: "black", width: 3 }
           },
           {
             x: series.months,
@@ -84,7 +77,7 @@ export default function InteractiveEnsemblePlot() {
             type: "scatter",
             mode: "lines+markers",
             name: "Bayesian",
-            line: { color: "blue", dash: "dot" }
+            line: { color: "red", width: 3, dash: "dot" }
           },
           {
             x: series.months,
@@ -92,7 +85,7 @@ export default function InteractiveEnsemblePlot() {
             type: "scatter",
             mode: "lines+markers",
             name: "Neural Network",
-            line: { color: "red", dash: "dash" }
+            line: { color: "blue", width: 3, dash: "dash" }
           },
           {
             x: series.months,
@@ -100,18 +93,42 @@ export default function InteractiveEnsemblePlot() {
             type: "scatter",
             mode: "lines+markers",
             name: "Ensemble",
-            line: { color: "green", width: 3 }
+            line: { color: "green", width: 4 }
           }
         ]}
         layout={{
           width: 900,
-          height: 600,
-          title: `${selected} Ensemble Prediction`,
-          xaxis: { title: "Test Month" },
-          yaxis: { title: "Yield (%)" },
-          hovermode: "closest"
+          height: 550,
+          paper_bgcolor: "white",
+          plot_bgcolor: "white",
+          font: { color: "black" },
+          xaxis: { title: "Test Month", gridcolor: "#cccccc" },
+          yaxis: { title: "Yield (%)", gridcolor: "#cccccc" },
+          margin: { t: 40, l: 60, r: 20, b: 60 },
         }}
+        style={{ margin: "0 auto" }}
       />
+
+      {/* DROPDOWN BELOW GRAPH */}
+      <div style={{ marginTop: "20px" }}>
+        <label style={{ fontSize: "18px" }}>
+          Select maturity:{" "}
+          <select
+            value={selected}
+            onChange={(e) => setSelected(e.target.value)}
+            style={{
+              padding: "10px 15px",
+              borderRadius: "8px",
+              fontSize: "16px",
+              cursor: "pointer"
+            }}
+          >
+            {maturities.map((m) => (
+              <option key={m} value={m}>{m}</option>
+            ))}
+          </select>
+        </label>
+      </div>
     </div>
   );
 }
