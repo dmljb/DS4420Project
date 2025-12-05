@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import YieldCurveHistory from "./YieldCurveHistory";
+import ModelResults from "./ModelResults";
+
 
 const API_BASE =
   window.location.hostname === "localhost"
@@ -89,7 +91,7 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState<"dashboard" | "yield_history">("dashboard");
+  const [page, setPage] = useState<"dashboard" | "yield_history" | "model_results">("dashboard");
 
   const [recoText, setRecoText] = useState<string | null>(null);
   const [recoLoading, setRecoLoading] = useState(false);
@@ -254,6 +256,7 @@ function App() {
         <div className="navbar">
           <button onClick={() => setPage("dashboard")}>Dashboard</button>
           <button onClick={() => setPage("yield_history")}>Yield Curve History</button>
+          <button onClick={() => setPage("model_results")}>Model Results</button>
         </div>
         <YieldCurveHistory />
         <div className="controls">
@@ -262,6 +265,20 @@ function App() {
       </div>
     );
   }
+
+  if (page === "model_results") {
+  return (
+    <div className="dashboard">
+      <div className="navbar">
+        <button onClick={() => setPage("dashboard")}>Dashboard</button>
+        <button onClick={() => setPage("yield_history")}>Yield Curve History</button>
+        <button onClick={() => setPage("model_results")}>Model Results</button>
+      </div>
+      <ModelResults />
+    </div>
+  );
+}
+
 
   const pnlIsPositive = prediction ? prediction.pnl_dollar >= 0 : false;
 
