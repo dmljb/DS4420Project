@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import YieldCurveHistory from "./YieldCurveHistory";
 import ModelResults from "./ModelResults";
+import InteractiveEnsemblePlot from "./InteractiveEnsemblePlot";
 
 
 const API_BASE =
@@ -91,7 +92,8 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState<"dashboard" | "yield_history" | "model_results">("dashboard");
+  const [page, setPage] = useState<"dashboard" | "yield_history" | "model_results" | "interactive"
+  >("dashboard");
 
   const [recoText, setRecoText] = useState<string | null>(null);
   const [recoLoading, setRecoLoading] = useState(false);
@@ -257,6 +259,7 @@ function App() {
           <button onClick={() => setPage("dashboard")}>Dashboard</button>
           <button onClick={() => setPage("yield_history")}>Yield Curve History</button>
           <button onClick={() => setPage("model_results")}>Model Results</button>
+          <button onClick={() => setPage("interactive")}>Interactive Plot</button>
         </div>
         <YieldCurveHistory />
         <div className="controls">
@@ -273,8 +276,24 @@ function App() {
         <button onClick={() => setPage("dashboard")}>Dashboard</button>
         <button onClick={() => setPage("yield_history")}>Yield Curve History</button>
         <button onClick={() => setPage("model_results")}>Model Results</button>
+        <button onClick={() => setPage("interactive")}>Interactive Plot</button>
       </div>
       <ModelResults />
+    </div>
+  );
+}
+
+if (page === "interactive") {
+  return (
+    <div className="dashboard">
+      <div className="navbar">
+        <button onClick={() => setPage("dashboard")}>Dashboard</button>
+        <button onClick={() => setPage("yield_history")}>Yield Curve History</button>
+        <button onClick={() => setPage("model_results")}>Model Results</button>
+        <button onClick={() => setPage("interactive")}>Interactive Plot</button>
+      </div>
+
+      <InteractiveEnsemblePlot />
     </div>
   );
 }
@@ -291,6 +310,7 @@ function App() {
         <button onClick={() => setPage("dashboard")}>Dashboard</button>
         <button onClick={() => setPage("yield_history")}>Yield Curve History</button>
         <button onClick={() => setPage("model_results")}>Model Results</button>
+        <button onClick={() => setPage("interactive")}>Interactive Plot</button>
       </div>
 
       <h1>Portfolio Dashboard</h1>

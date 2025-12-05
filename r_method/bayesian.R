@@ -1,10 +1,11 @@
 library(brms)
 # ======================================================
 # Getting data
-data <- read.csv('/Users/dylantoplas/Documents/ds4420/DS4420Project/bonds_dashboards/fred_md.csv')
-epu <- read.csv('/Users/dylantoplas/Documents/ds4420/DS4420Project/bonds_dashboards/epu_index.csv')
-auction <- read.csv('/Users/dylantoplas/Documents/ds4420/DS4420Project/bonds_dashboards/monthly_auction.csv')
-g2 <- read.csv('/Users/dylantoplas/Documents/ds4420/DS4420Project/bonds_dashboards/GS2.csv')
+setwd("C:/Users/denis/DS4420Project/r_method")
+data <- read.csv('fred_md.csv')
+epu <- read.csv('epu_index.csv')
+auction <- read.csv('monthly_auction.csv')
+g2 <- read.csv('GS2.csv')
 
 data$sasdate <- as.Date(data$sasdate, format = "%m/%d/%Y")
 epu$DATE <- as.Date(epu$DATE) + 1
@@ -177,3 +178,19 @@ yield_curve <- c(future_gs1, future_gs2, future_gs5, future_gs10)
 yield_curve
 # 4.089233 3.766546 3.407099 3.824731
 
+bayes_preds <- data.frame(
+  GS1 = test_gs1$predicted,
+  GS2 = test_gs2$predicted,
+  GS5 = test_gs5$predicted,
+  GS10 = test_gs10$predicted
+)
+
+actual_yields <- data.frame(
+  GS1 = test_gs1$actual,
+  GS2 = test_gs2$actual,
+  GS5 = test_gs5$actual,
+  GS10 = test_gs10$actual
+)
+
+write.csv(bayes_preds, "bayesian_predictions.csv", row.names = FALSE)
+write.csv(actual_yields, "actual_yields.csv", row.names = FALSE)
