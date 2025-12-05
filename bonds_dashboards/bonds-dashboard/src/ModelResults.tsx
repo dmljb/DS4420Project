@@ -10,12 +10,12 @@ export default function ModelResults() {
 
         <div className="graph-card">
           <h3>Neural Network: Actual vs Predicted Yields</h3>
-          <img src="/graphs/nn.png" alt="Neural Network Results" />
+          <img src="/DS4420Project/graphs/nn.png" alt="Neural Network Results" />
         </div>
 
         <div className="graph-card">
           <h3>Bayesian Model: Out-of-Sample Test Results</h3>
-          <img src="/graphs/BayesianResults.png" alt="Bayesian Results" />
+          <img src="/DS4420Project/graphs/nn.png" alt="Bayesian Results" />
         </div>
 
       </div>
